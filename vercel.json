@@ -9,6 +9,11 @@
       "source": "/review/",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/admin",
+      "destination": "https://vision.leadrai.com/site-admin/site-3dda69829c87e2dec895a31a422759ee2559",
+      "permanent": false
     }
   ]
 }
