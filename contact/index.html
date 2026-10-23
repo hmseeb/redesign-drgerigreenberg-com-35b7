@@ -24,7 +24,7 @@
 
 <div class="topbar">
   <div class="wrap">
-    <span>One Doctor &nbsp;|&nbsp; 5 Healing Methods &nbsp;|&nbsp; Over 25 Years Experience</span>
+    <span>One doctor &nbsp;|&nbsp; Five treatments, one holistic approach &nbsp;|&nbsp; Over 25 years experience</span>
     <a href="tel:+18183241539">Call or text (818) 324-1539</a>
   </div>
 </div>
@@ -50,10 +50,11 @@
         <li><a href="/">Home</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/acucalm/">AcuCalm Treatment</a></li>
+        <li><a href="/health-library/">Health Library</a></li>
         <li><a href="/testimonials/">Testimonials</a></li>
         <li><a href="/contact/" aria-current="page">Contact</a></li>
       </ul>
-      <a class="btn btn--primary nav__cta" href="tel:+18183241539">Call (818) 324-1539</a>
+      <a class="btn btn--rust nav__cta" href="tel:+18183241539">(818) 324-1539</a>
     </nav>
   </div>
 </header>
@@ -147,10 +148,10 @@
               </span>
               <div>
                 <div class="info-list__label">AcuCalm Treatment</div>
-                <div class="info-list__value"><a href="/acucalm/">7&ndash;8 pm, Tuesday or Wednesday</a></div>
+                <div class="info-list__value"><a href="/acucalm/">Stress, anxiety &amp; sleep</a></div>
                 <div class="info-list__note">
-                  The Acupuncture Stress Reduction Treatment runs one evening a month. Call or text to
-                  find out when the next session is.
+                  An individual Acupuncture Stress Reduction Treatment, booked like any other visit.
+                  Call or text to arrange a time.
                 </div>
               </div>
             </li>
@@ -161,7 +162,10 @@
               </span>
               <div>
                 <div class="info-list__label">Already a patient?</div>
-                <div class="info-list__value"><a href="/review">Leave us a review</a></div>
+                <div class="info-list__value">
+                  <a href="https://www.google.com/maps/search/?api=1&amp;query=Greenberg+Acupuncture+%26+Chiropractic+Sherman+Oaks+CA"
+                     target="_blank" rel="noopener">Leave us a review</a>
+                </div>
                 <div class="info-list__note">
                   Share your experience so others can find natural, drug-free care.
                 </div>
@@ -173,9 +177,12 @@
         <div class="reveal">
           <div class="form-card">
             <h2 style="margin-bottom:.4em;">Send a message</h2>
-            <p style="color:var(--ink-500);margin-bottom:1.8rem;">
+            <p style="color:var(--ink-500);margin-bottom:.9rem;">
               Tell Dr. Geri what&rsquo;s going on and she&rsquo;ll get back to you. Fields marked
               <span class="req" aria-hidden="true">*</span> are required.
+            </p>
+            <p style="margin-bottom:1.8rem;">
+              <strong>Prefer text? Text <a href="tel:+18183241539">(818) 324-1539</a>.</strong>
             </p>
 
             <form method="POST"
@@ -309,7 +316,8 @@
           <h3>Already seeing Dr. Geri?</h3>
           <p>Leave a review and help someone else find a natural way out of pain.</p>
         </div>
-        <a class="btn btn--clay" href="/review">Leave us a review</a>
+        <a class="btn btn--rust" href="https://www.google.com/maps/search/?api=1&amp;query=Greenberg+Acupuncture+%26+Chiropractic+Sherman+Oaks+CA"
+           target="_blank" rel="noopener">Leave us a review</a>
       </div>
     </div>
   </section>
@@ -330,9 +338,9 @@
           </span>
         </a>
         <p>
-          One Doctor &middot; 5 Healing Methods &middot; Over 25 Years Experience. Chiropractic,
-          Acupuncture, Deep Muscle Therapy, Chinese Herbology and Traditional Chinese Medicine,
-          combined in one calm office by Dr. Geri Greenberg.
+          Five treatments, one holistic approach. Chiropractic, Acupuncture, Deep Muscle Therapy,
+          Chinese Herbology and Traditional Chinese Medicine, combined in one calm office by
+          Dr. Geri Greenberg over 25 years of practice.
         </p>
       </div>
 
@@ -342,6 +350,7 @@
           <li><a href="/">Home</a></li>
           <li><a href="/about/">About Dr. Geri</a></li>
           <li><a href="/acucalm/">AcuCalm Treatment</a></li>
+          <li><a href="/health-library/">Health Library</a></li>
           <li><a href="/testimonials/">Testimonials</a></li>
           <li><a href="/contact/">Contact Us</a></li>
         </ul>
@@ -363,7 +372,8 @@
         <a class="footer-phone" href="tel:+18183241539">(818) 324-1539</a>
         <p style="margin-bottom:1.1rem;">Call or text Dr. Geri for an appointment, or for a free consultation.</p>
         <p style="margin-bottom:1.1rem;">Mailing address: 14120 Ventura Blvd, Ste C-233, Sherman Oaks, CA 91423</p>
-        <a class="footer-review" href="/review">
+        <a class="footer-review" href="https://www.google.com/maps/search/?api=1&amp;query=Greenberg+Acupuncture+%26+Chiropractic+Sherman+Oaks+CA"
+           target="_blank" rel="noopener">
           <span aria-hidden="true">★</span> Leave us a review
         </a>
       </div>
@@ -378,6 +388,15 @@
     </div>
   </div>
 </footer>
+
+<!-- Background music: her own recording, looped quietly. Autoplay is attempted and
+     usually blocked by the browser; the fixed button always lets visitors choose. -->
+<audio id="site-music" src="/audio/canyon-trilogy.mp3" loop preload="none"></audio>
+<button class="music-toggle" type="button" id="music-toggle"
+        aria-pressed="false" aria-label="Play background music">
+  <svg class="music-toggle__play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.1v13.8a1 1 0 0 0 1.52.86l11.1-6.9a1 1 0 0 0 0-1.72L9.52 4.24A1 1 0 0 0 8 5.1z"/></svg>
+  <svg class="music-toggle__pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4h3.4v16H7zM13.6 4H17v16h-3.4z"/></svg>
+</button>
 
 <script src="/assets/js/main.js" defer></script>
 <script src="https://vision.leadrai.com/widget/loader.js" data-lv-widget data-kind="chatbot" data-widget="5cbfffac-97bb-4769-b010-7d2a592ea001" async></script>
