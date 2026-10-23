@@ -615,6 +615,24 @@ section { position: relative; }
 .card h3 { margin-bottom: .5em; }
 .card p { color: var(--ink-500); font-size: .98rem; }
 
+.card__top {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  margin-bottom: 1.1rem;
+}
+.card__top .card__num { margin-bottom: 0; }
+.card__thumb {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--sand-200);
+  background: var(--sand-200);
+  display: block;
+}
+
 .card--flush { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
 .card--flush .card__body { padding: clamp(1.35rem, 1.1rem + .6vw, 1.8rem); flex: 1; }
 .card__img {

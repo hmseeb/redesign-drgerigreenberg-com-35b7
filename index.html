@@ -31,6 +31,15 @@
   "url": "/",
   "telephone": "+1-818-324-1539",
   "image": "/images/source/02-image3.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "name": "Mailing address",
+    "streetAddress": "14120 Ventura Blvd, Ste C-233",
+    "addressLocality": "Sherman Oaks",
+    "addressRegion": "CA",
+    "postalCode": "91423",
+    "addressCountry": "US"
+  },
   "founder": {
     "@type": "Person",
     "name": "Dr. Geri Greenberg"
@@ -69,7 +78,7 @@
       <ul class="nav__list">
         <li><a href="/" aria-current="page">Home</a></li>
         <li><a href="/about/">About</a></li>
-        <li><a href="/acucalm/">AcuCalm Clinic</a></li>
+        <li><a href="/acucalm/">AcuCalm Treatment</a></li>
         <li><a href="/testimonials/">Testimonials</a></li>
         <li><a href="/contact/">Contact</a></li>
       </ul>
@@ -190,7 +199,12 @@
 
       <div class="grid grid--3">
         <article class="card reveal">
-          <span class="card__num" aria-hidden="true">1</span>
+          <div class="card__top">
+            <img class="card__thumb" src="/images/source/treatment-chiropractic.jpg"
+                 alt="Model of the lumbar spine showing vertebrae and discs, used in Dr. Geri&rsquo;s chiropractic care"
+                 width="320" height="320" loading="lazy">
+            <span class="card__num" aria-hidden="true">1</span>
+          </div>
           <h3>Chiropractic</h3>
           <p>
             Gentle, specific adjustments that restore joint motion and normalize circulation &mdash;
@@ -200,7 +214,12 @@
         </article>
 
         <article class="card reveal">
-          <span class="card__num" aria-hidden="true">2</span>
+          <div class="card__top">
+            <img class="card__thumb" src="/images/source/treatment-acupuncture.jpg"
+                 alt="Acupuncture model marked with meridian lines and acupuncture points"
+                 width="320" height="320" loading="lazy">
+            <span class="card__num" aria-hidden="true">2</span>
+          </div>
           <h3>Acupuncture</h3>
           <p>
             Fine-needle treatment that releases blocked circulation and qi/energy flow, harmonizing
@@ -209,7 +228,12 @@
         </article>
 
         <article class="card reveal">
-          <span class="card__num" aria-hidden="true">3</span>
+          <div class="card__top">
+            <img class="card__thumb" src="/images/source/treatment-deep-muscle-therapy.jpg"
+                 alt="Anatomical chart of the trapezius and upper back muscles worked on in acupressure and deep muscle therapy"
+                 width="320" height="320" loading="lazy">
+            <span class="card__num" aria-hidden="true">3</span>
+          </div>
           <h3>Deep Muscle Therapy</h3>
           <p>
             Hands-on muscle work that releases tension, spasm and congested circulation &mdash;
@@ -219,7 +243,12 @@
         </article>
 
         <article class="card reveal">
-          <span class="card__num" aria-hidden="true">4</span>
+          <div class="card__top">
+            <img class="card__thumb" src="/images/source/treatment-chinese-medicine-herbology.jpg"
+                 alt="Dried Chinese herbs and berries weighed on a brass scale pan for a herbal formula"
+                 width="320" height="320" loading="lazy">
+            <span class="card__num" aria-hidden="true">4</span>
+          </div>
           <h3>Chinese Herbology</h3>
           <p>
             Specific Chinese herbal formulas chosen for your constitution and the season, used to
@@ -228,7 +257,12 @@
         </article>
 
         <article class="card reveal">
-          <span class="card__num" aria-hidden="true">5</span>
+          <div class="card__top">
+            <img class="card__thumb" src="/images/source/treatment-chinese-medicine-herbology.jpg"
+                 alt="Dried Chinese herbs and berries on a brass scale pan, used in Traditional Chinese Medicine"
+                 width="320" height="320" loading="lazy">
+            <span class="card__num" aria-hidden="true">5</span>
+          </div>
           <h3>Traditional Chinese Medicine</h3>
           <p>
             The diagnostic framework behind it all &mdash; meridian theory, the Five Elements and the
@@ -238,12 +272,12 @@
 
         <article class="card reveal" style="background:var(--jade-900);border-color:var(--jade-900);">
           <span class="card__num" aria-hidden="true" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#8cc9bd;">+</span>
-          <h3 style="color:#fff;">AcuCalm Stress Reduction Clinic</h3>
+          <h3 style="color:#fff;">AcuCalm Stress Reduction Treatment</h3>
           <p style="color:#dcefea;">
             A dedicated monthly evening session of acupuncture for stress reduction and energy
             balancing, offered 7&ndash;8&nbsp;pm on a Tuesday or Wednesday evening.
           </p>
-          <p style="margin-top:1rem;"><a href="/acucalm/" style="color:#8cc9bd;font-weight:650;">See the AcuCalm Clinic &rarr;</a></p>
+          <p style="margin-top:1rem;"><a href="/acucalm/" style="color:#8cc9bd;font-weight:650;">See the AcuCalm Treatment &rarr;</a></p>
         </article>
       </div>
     </div>
@@ -553,7 +587,7 @@
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/about/">About Dr. Geri</a></li>
-          <li><a href="/acucalm/">AcuCalm Clinic</a></li>
+          <li><a href="/acucalm/">AcuCalm Treatment</a></li>
           <li><a href="/testimonials/">Testimonials</a></li>
           <li><a href="/contact/">Contact Us</a></li>
         </ul>
@@ -574,6 +608,7 @@
         <h4>Appointments</h4>
         <a class="footer-phone" href="tel:+18183241539">(818) 324-1539</a>
         <p style="margin-bottom:1.1rem;">Call or text Dr. Geri for an appointment, or for a free consultation.</p>
+        <p style="margin-bottom:1.1rem;">Mailing address: 14120 Ventura Blvd, Ste C-233, Sherman Oaks, CA 91423</p>
         <a class="footer-review" href="/review">
           <span aria-hidden="true">★</span> Leave us a review
         </a>
