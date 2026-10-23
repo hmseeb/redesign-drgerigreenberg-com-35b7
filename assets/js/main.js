@@ -41,26 +41,67 @@
     for (var i = 0; i < nodes.length; i++) nodes[i].textContent = year;
   }
 
-  /* ---------- Scroll reveal ---------- */
+  /* ---------- Scroll reveal ----------
+     Reveals must never be able to strand content at opacity 0. An
+     IntersectionObserver alone can miss elements during fast scrolling
+     (flings, scroll restoration, anchor jumps), so a cheap geometry sweep
+     backs it up: anything that has reached the viewport — or has already
+     been scrolled past — is revealed and then forgotten. */
   function initReveal() {
-    var items = document.querySelectorAll('.reveal');
+    var items = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
     if (!items.length) return;
 
-    if (!('IntersectionObserver' in window)) {
-      for (var i = 0; i < items.length; i++) items[i].classList.add('is-in');
+    function show(el) { el.classList.add('is-in'); }
+
+    // No observer support, or motion is unwelcome: show everything at once.
+    if (!('IntersectionObserver' in window) ||
+        (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      items.forEach(show);
       return;
     }
 
+    var pending = items;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-in');
+          show(entry.target);
           io.unobserve(entry.target);
         }
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }, { threshold: 0 });
 
-    items.forEach(function (el) { io.observe(el); });
+    pending.forEach(function (el) { io.observe(el); });
+
+    var queued = false;
+    function sweep() {
+      queued = false;
+      var height = window.innerHeight || document.documentElement.clientHeight;
+      pending = pending.filter(function (el) {
+        if (el.classList.contains('is-in')) { io.unobserve(el); return false; }
+        // Top edge has entered the viewport, or the element is already above it.
+        if (el.getBoundingClientRect().top < height) {
+          show(el);
+          io.unobserve(el);
+          return false;
+        }
+        return true;
+      });
+      if (!pending.length) {
+        window.removeEventListener('scroll', request);
+        window.removeEventListener('resize', request);
+      }
+    }
+
+    function request() {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(sweep);
+    }
+
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    window.addEventListener('load', request);
+    sweep();
   }
 
   /* ---------- Form status helpers ---------- */
