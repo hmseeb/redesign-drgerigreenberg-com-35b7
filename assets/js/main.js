@@ -289,14 +289,13 @@
     });
   }
 
-  /* ---------- Health library: category filter + newest/oldest sort ---------- */
+  /* ---------- Health library: category filter ---------- */
   function initLibrary() {
     var grid = document.querySelector('[data-lib-grid]');
     if (!grid) return;
 
     var cards = Array.prototype.slice.call(grid.querySelectorAll('[data-category]'));
     var filters = Array.prototype.slice.call(document.querySelectorAll('.lib-filter'));
-    var sort = document.getElementById('lib-sort');
     var empty = document.querySelector('[data-lib-empty]');
     var active = 'all';
 
@@ -310,16 +309,6 @@
       if (empty) empty.classList.toggle('is-visible', shown === 0);
     }
 
-    function reorder(order) {
-      var sorted = cards.slice().sort(function (a, b) {
-        var da = a.getAttribute('data-date') || '';
-        var db = b.getAttribute('data-date') || '';
-        if (da === db) return 0;
-        return order === 'oldest' ? (da < db ? -1 : 1) : (da > db ? -1 : 1);
-      });
-      sorted.forEach(function (card) { grid.appendChild(card); });
-    }
-
     filters.forEach(function (btn) {
       btn.addEventListener('click', function () {
         active = btn.getAttribute('data-filter') || 'all';
@@ -329,11 +318,6 @@
         apply();
       });
     });
-
-    if (sort) {
-      sort.addEventListener('change', function () { reorder(sort.value); });
-      reorder(sort.value);
-    }
 
     // Allow deep links such as /health-library/?category=seasonal
     var requested = new URLSearchParams(window.location.search).get('category');

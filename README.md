@@ -24,7 +24,7 @@ Review links point straight to the Google listing; there is no in-repo `/review`
 ```
 assets/css/styles.css   design system (jade + rust) + all page styles
 assets/js/main.js       mobile nav, scroll reveal, form handling, background
-                        music toggle, health-library filter/sort
+                        music toggle, health-library category filter
 audio/                  canyon-trilogy.mp3 — background music
 images/source/          photography carried over from the previous site
 favicon.svg             site icon
@@ -54,8 +54,8 @@ pages. If playback was wanted but blocked, it starts on the first interaction.
 ## Health library
 
 `health-library/index.html` holds the article cards inline. Each card carries
-`data-category` and `data-date`; the filter buttons and the newest/oldest sort
-are wired up in `assets/js/main.js`. Without JavaScript every card is visible
+`data-category`; the category filter buttons are wired up in
+`assets/js/main.js`. Without JavaScript every card is visible
 and each "Read" still expands, since the extracts use `<details>`. The page also
 accepts a `?category=` deep link, e.g. `/health-library/?category=seasonal`.
 
