@@ -1488,3 +1488,70 @@ section { position: relative; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------------- Office door watercolor crop ---------------- */
+/* The lower strip of /images/source/02-image3.jpg (640 x 876) carries the old street
+   numbers painted on the doormat. These wrappers clip that strip with overflow:hidden,
+   keeping the door, the sign and the artwork above the numbers visible. */
+.door-crop {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+}
+.door-crop > img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+/* Standalone: show the top 80% of the watercolor (640 x 876 -> 640 x 700). */
+.door-crop--full { aspect-ratio: 640 / 700; }
+
+.split__media .door-crop {
+  max-width: 420px;
+  margin-inline: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* Inside a flush card the watercolor keeps the same fixed band as its neighbours; the
+   band is taken from the upper part of the artwork so no doormat number can show. */
+.card__img.door-crop > img { transform: translateY(-20%); }
+
+/* ---------------- Framed client photo (screenshot source) ---------------- */
+/* The supplied scalp file is a screenshot: this frame shows only the rounded photo
+   inside it (source window x 34..926, y 91..681 of 1091 x 895) and clips the white
+   margins and the page fragments below it. */
+.shot-frame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--sand-200);
+}
+.shot-frame > img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+  top: 50%;
+}
+.shot-frame--scalp > img {
+  width: 122.31%;      /* 1091 / 892 */
+  left: -3.81%;        /* -34 / 892 */
+  margin-top: -43.27%; /* centres the photo window (source y 91..681) in the band */
+}
+.lib-card > .shot-frame { height: 140px; }
+
+/* ---------------- Small supporting photo inside a card ---------------- */
+.card__photo {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: var(--radius-sm);
+  margin: 0 0 1.1rem;
+}
