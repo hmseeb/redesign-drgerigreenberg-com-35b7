@@ -130,7 +130,15 @@
       var pageField = form.querySelector('input[name="_page"]');
       if (pageField) pageField.value = window.location.href;
 
+      // Strict forms (Contact) only confirm on a parsed JSON ok === true and lock
+      // themselves when the outcome is unknown, so nothing is sent twice.
+      var strict = form.getAttribute('data-confirm') === 'strict';
+
       form.addEventListener('submit', function (event) {
+        if (form.getAttribute('data-locked') === 'true') {
+          event.preventDefault(); // outcome unknown: never resubmit automatically
+          return;
+        }
         if (!window.fetch || !form.action) return; // let the browser post normally
 
         event.preventDefault();
@@ -161,11 +169,31 @@
           },
           body: JSON.stringify(data)
         })
-          .then(function (response) {
-            return response.json().catch(function () { return { ok: response.ok }; });
+          .then(
+            function (response) {
+              return response.text().then(
+                function (text) { return { ok: response.ok, text: text }; },
+                function () { return { ok: response.ok, text: null }; }
+              );
+            },
+            function () { return null; } // request never completed: outcome unknown
+          )
+          .then(function (raw) {
+            var parsed = null;
+            if (raw && typeof raw.text === 'string') {
+              try { parsed = JSON.parse(raw.text); } catch (e) { parsed = null; }
+            }
+            if (parsed && parsed.ok === true) return 'success';
+            if (strict) {
+              // A readable refusal is a definite failure; anything else is uncertain.
+              if (parsed && parsed.ok === false) return 'error';
+              return 'uncertain';
+            }
+            if (!parsed && raw && raw.ok) return 'success';
+            return 'error';
           })
-          .then(function (result) {
-            if (result && result.ok) {
+          .then(function (state) {
+            if (state === 'success') {
               form.reset();
               var newPage = form.querySelector('input[name="_page"]');
               if (newPage) newPage.value = window.location.href;
@@ -175,22 +203,32 @@
                 'Thanks, your message was sent.',
                 'Dr. Geri will get back to you shortly. For anything urgent, call or text (818) 324-1539.'
               );
+            } else if (state === 'uncertain') {
+              // Keep every answer in the form and block another send attempt.
+              form.setAttribute('data-locked', 'true');
+              showStatus(
+                form,
+                'error',
+                'We could not confirm your message was sent.',
+                'Please don’t send it again — call or text Dr. Geri at (818) 324-1539 to check. Your details are still here on this page.'
+              );
             } else {
-              throw new Error('Submission failed');
+              showStatus(
+                form,
+                'error',
+                'Sorry, that did not go through.',
+                'Please try again, or call or text Dr. Geri directly at (818) 324-1539.'
+              );
             }
-          })
-          .catch(function () {
-            showStatus(
-              form,
-              'error',
-              'Sorry, that did not go through.',
-              'Please try again, or call or text Dr. Geri directly at (818) 324-1539.'
-            );
-          })
-          .then(function () {
+
             if (button) {
-              button.disabled = false;
-              button.textContent = originalLabel;
+              if (form.getAttribute('data-locked') === 'true') {
+                button.disabled = true;
+                button.textContent = 'Status unknown — please call';
+              } else {
+                button.disabled = false;
+                button.textContent = originalLabel;
+              }
             }
           });
       });

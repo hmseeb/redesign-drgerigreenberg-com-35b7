@@ -109,8 +109,8 @@
                 <div class="info-list__label">Email &amp; messages</div>
                 <div class="info-list__value">Use the form on this page</div>
                 <div class="info-list__note">
-                  Messages sent through the form reach the office directly, and Dr. Geri replies by
-                  email or phone &mdash; whichever you prefer.
+                  Messages sent through the form reach the office directly as email, and Dr. Geri
+                  replies to the address you give us.
                 </div>
               </div>
             </li>
@@ -178,7 +178,7 @@
           <div class="form-card">
             <h2 style="margin-bottom:.4em;">Send a message</h2>
             <p style="color:var(--ink-500);margin-bottom:.9rem;">
-              Tell Dr. Geri what&rsquo;s going on and she&rsquo;ll get back to you. Fields marked
+              Send Dr. Geri a short message and she&rsquo;ll get back to you. Fields marked
               <span class="req" aria-hidden="true">*</span> are required.
             </p>
             <p style="margin-bottom:1.8rem;">
@@ -187,7 +187,7 @@
 
             <form method="POST"
                   action="https://vision.leadrai.com/api/forms/b78ef18f1285d5ef5211ee31410e65e0"
-                  data-leadr>
+                  data-leadr data-confirm="strict">
               <div class="form-status" role="status" aria-live="polite">
                 <span class="form-status__icon" aria-hidden="true">✓</span>
                 <div>
@@ -212,55 +212,15 @@
                 </div>
 
                 <div class="field">
-                  <label for="c-phone">Phone <span class="req" aria-hidden="true">*</span></label>
-                  <input id="c-phone" type="tel" name="phone" autocomplete="tel" placeholder="(818) 555-0100" required>
-                </div>
-
-                <div class="field">
-                  <label for="c-service">Service needed</label>
-                  <select id="c-service" name="Service needed">
-                    <option value="Not sure yet — please advise">Not sure yet &mdash; please advise</option>
-                    <option value="Chiropractic">Chiropractic</option>
-                    <option value="Acupuncture">Acupuncture</option>
-                    <option value="Deep Muscle Therapy">Deep Muscle Therapy</option>
-                    <option value="Chinese Herbology">Chinese Herbology</option>
-                    <option value="Traditional Chinese Medicine">Traditional Chinese Medicine</option>
-                    <option value="Seasonal tune-up">Seasonal tune-up</option>
-                    <option value="AcuCalm stress reduction treatment">AcuCalm stress reduction treatment</option>
-                    <option value="Free consultation">Free consultation</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="c-date">Preferred date</label>
-                  <input id="c-date" type="date" name="Preferred date">
-                </div>
-
-                <div class="field">
-                  <label for="c-time">Preferred time of day</label>
-                  <select id="c-time" name="Preferred time of day">
-                    <option value="No preference">No preference</option>
-                    <option value="Morning">Morning</option>
-                    <option value="Midday">Midday</option>
-                    <option value="Afternoon">Afternoon</option>
-                    <option value="Evening">Evening</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="c-contact-method">Best way to reach you</label>
-                  <select id="c-contact-method" name="Best way to reach you">
-                    <option value="Phone call">Phone call</option>
-                    <option value="Text message">Text message</option>
-                    <option value="Email">Email</option>
-                  </select>
+                  <label for="c-phone">Phone <span style="font-weight:500;color:var(--ink-500);">(optional)</span></label>
+                  <input id="c-phone" type="tel" name="phone" autocomplete="tel" placeholder="(818) 555-0100">
                 </div>
 
                 <div class="field field--full">
-                  <label for="c-message">How can we help? <span class="req" aria-hidden="true">*</span></label>
-                  <textarea id="c-message" name="How can we help"
-                            placeholder="Describe your pain or condition, how long it's been going on, and anything you've already tried."
-                            required></textarea>
+                  <label for="c-message">Your message <span class="req" aria-hidden="true">*</span></label>
+                  <textarea id="c-message" name="message"
+                            placeholder="Let Dr. Geri know what you'd like to ask about and the best time to reach you."
+                            maxlength="3000" required></textarea>
                 </div>
               </div>
 
@@ -269,8 +229,9 @@
               </div>
 
               <p class="form-note">
-                Please don&rsquo;t include sensitive medical records in this form. For anything urgent,
-                call or text <a href="tel:+18183241539">(818) 324-1539</a>. In an emergency, call 911.
+                Please don&rsquo;t include medical details or health records in this form &mdash; Dr. Geri
+                will go through those with you directly. For anything urgent, call or text
+                <a href="tel:+18183241539">(818) 324-1539</a>. In an emergency, call 911.
               </p>
             </form>
           </div>

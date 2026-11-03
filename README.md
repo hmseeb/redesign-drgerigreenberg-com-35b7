@@ -43,6 +43,22 @@ work with or without JavaScript:
 - without JS, the browser posts normally and returns to the page with
   `?submitted=1`, which renders the same confirmation
 
+The Contact form is deliberately simple — name, email, optional phone and a
+message, nothing medical. It carries `data-confirm="strict"`: the inline
+confirmation is shown only when the reply parses as JSON with `ok === true`.
+If the reply cannot be read, or the request never completed, the outcome is
+reported as unconfirmed, every answer stays in the form and the submit button
+stays disabled so nothing is sent twice. The AcuCalm appointment form keeps its
+previous behaviour.
+
+`api/contact.js` + `lib/contact.js` hold the server-only email path for contact
+messages (one provider request per call, no retries, nothing logged or stored).
+It is inert unless these Vercel environment variables are set:
+`CONTACT_DELIVERY_ENABLED=true`, `CONTACT_GHL_TOKEN`,
+`CONTACT_GHL_CONTACT_ID`, `CONTACT_RECIPIENT=drgeri@aol.com`,
+`CONTACT_INTERNAL_BCC=dan@badaaas.com` and `CONTACT_ALLOWED_ORIGINS`.
+No credentials live in this repository.
+
 ## Background music
 
 `audio/canyon-trilogy.mp3` loops quietly (volume `0.25`) on every page. Autoplay

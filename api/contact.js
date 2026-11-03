@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
   if (!['application/json', 'application/x-www-form-urlencoded'].includes(type)) return reply(415, false, 'Please use the contact form.');
   let data;
   try { data = parse(req.body); } catch {
-    return reply(400, false, 'Please check your name, email, phone and message.');
+    return reply(400, false, 'Please check your name, email and message.');
   }
   try {
     if (process.env.CONTACT_DELIVERY_ENABLED !== 'true') throw new Error('disabled');
