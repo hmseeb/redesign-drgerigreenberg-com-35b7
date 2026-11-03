@@ -929,6 +929,21 @@ section { position: relative; }
 }
 .yinyang svg { width: 62%; height: auto; display: block; }
 
+/* Card-sized emblem that sits in a .card__top row next to the badge and thumbnail. */
+.yinyang--chip {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  max-width: none;
+  margin-inline: 0;
+}
+/* Terracotta variant (AcuCalm card on the home page). */
+.yinyang--rust {
+  color: var(--rust-600);
+  background: radial-gradient(circle at 50% 50%, var(--rust-100), var(--rust-200));
+  border-color: var(--rust-200);
+}
+
 /* ---------------- Background music toggle ---------------- */
 
 .music-toggle {
@@ -1545,6 +1560,21 @@ section { position: relative; }
   margin-top: -43.27%; /* centres the photo window (source y 91..681) in the band */
 }
 .lib-card > .shot-frame { height: 140px; }
+
+/* Same screenshot as a 72px square card thumbnail: the photo window is scaled to
+   cover the square, so only the hands-on-head photograph shows. */
+.shot-frame--thumb {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  border: 1px solid var(--sand-200);
+}
+.shot-frame--scalp.shot-frame--thumb > img {
+  width: 195.2%;
+  left: -35.9%;
+  margin-top: -69%;
+}
 
 /* ---------------- Small supporting photo inside a card ---------------- */
 .card__photo {
