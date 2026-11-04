@@ -1267,6 +1267,30 @@ section { position: relative; }
   margin-inline: auto;
   font-size: clamp(1.02rem, .98rem + .3vw, 1.15rem);
 }
+/* Inline (non-button) phone links sit on the dark green band, where the global
+   jade link colour is unreadable. Keep them white and underlined in every state. */
+.cta-band a[href^="tel:"]:not(.btn) {
+  color: var(--white);
+  text-decoration: underline;
+}
+.cta-band a[href^="tel:"]:not(.btn):hover,
+.cta-band a[href^="tel:"]:not(.btn):focus,
+.cta-band a[href^="tel:"]:not(.btn):focus-visible {
+  color: var(--white);
+  text-decoration: underline;
+}
+/* Ghost buttons default to dark jade text/border — invisible on the dark band. */
+.cta-band .btn--ghost {
+  border-color: rgba(255, 255, 255, .38);
+  color: var(--white);
+}
+.cta-band .btn--ghost:hover,
+.cta-band .btn--ghost:focus,
+.cta-band .btn--ghost:focus-visible {
+  background: rgba(255, 255, 255, .1);
+  border-color: var(--white);
+  color: var(--white);
+}
 
 /* ---------------- Page header (interior) ---------------- */
 
@@ -1560,6 +1584,23 @@ section { position: relative; }
   margin-top: -43.27%; /* centres the photo window (source y 91..681) in the band */
 }
 .lib-card > .shot-frame { height: 140px; }
+
+/* The supplied AcuCalm resting photo is also a screenshot: the rounded photo sits at
+   source x 40..243, y 23..226 of 288 x 261. This frame shows only that square window
+   and clips the white margins around it. */
+.shot-frame--resting {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.shot-frame--resting > img {
+  width: 141.18%;      /* 288 / 204 */
+  left: -19.61%;       /* -40 / 204 */
+  margin-top: -61.03%; /* centres the photo window (source y 23..226) in the frame */
+}
 
 /* Same screenshot as a 72px square card thumbnail: the photo window is scaled to
    cover the square, so only the hands-on-head photograph shows. */
