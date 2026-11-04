@@ -121,6 +121,36 @@
     box.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  /* ---------- Strict-form duplicate-send guard ---------- */
+  // A strict form (Contact) marks its attempt pending BEFORE the request leaves the
+  // browser and mirrors that mark into sessionStorage where it is available, so a
+  // second submit is refused while the first is still in flight AND after a reload.
+  // The guard is only ever cleared once the server confirms delivery.
+  function guardKey(form) {
+    var named = form.querySelector('input[name="_form"]');
+    return 'contact-send-guard:' + window.location.pathname + ':' + ((named && named.value) || 'form');
+  }
+  function readGuard(form) {
+    try { return window.sessionStorage.getItem(guardKey(form)); } catch (e) { return null; }
+  }
+  function writeGuard(form, state) {
+    try { window.sessionStorage.setItem(guardKey(form), state); } catch (e) { /* private mode */ }
+  }
+  function clearGuard(form) {
+    try { window.sessionStorage.removeItem(guardKey(form)); } catch (e) { /* private mode */ }
+  }
+
+  function lockForm(form, button) {
+    form.setAttribute('data-locked', 'true');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Status unknown — please call';
+    }
+  }
+
+  var UNCERTAIN_TITLE = 'We could not confirm your message was sent.';
+  var UNCERTAIN_NOTE = 'Please don’t send it again — call or text Dr. Geri at (818) 324-1539 to check. Your details are still here on this page.';
+
   /* ---------- Forms: hidden _page + fetch submit ---------- */
   function initForms() {
     var forms = document.querySelectorAll('form[data-leadr]');
@@ -130,13 +160,27 @@
       var pageField = form.querySelector('input[name="_page"]');
       if (pageField) pageField.value = window.location.href;
 
-      // Strict forms (Contact) only confirm on a parsed JSON ok === true and lock
-      // themselves when the outcome is unknown, so nothing is sent twice.
+      // Strict forms (Contact) only confirm on response.ok AND a parsed result.ok
+      // === true, and lock themselves whenever the outcome is unknown so nothing
+      // is ever sent twice.
       var strict = form.getAttribute('data-confirm') === 'strict';
 
+      // In-memory half of the guard: instant, and blocks a concurrent submit even
+      // when sessionStorage is unavailable.
+      var pending = false;
+
+      // An attempt recorded earlier in this tab never reached a confirmed result,
+      // so the outcome is still unknown. Stay locked rather than inviting a resend.
+      if (strict && readGuard(form)) {
+        pending = true;
+        lockForm(form, form.querySelector('button[type="submit"]'));
+        showStatus(form, 'error', UNCERTAIN_TITLE, UNCERTAIN_NOTE);
+      }
+
       form.addEventListener('submit', function (event) {
-        if (form.getAttribute('data-locked') === 'true') {
-          event.preventDefault(); // outcome unknown: never resubmit automatically
+        if (pending || form.getAttribute('data-locked') === 'true') {
+          // Already in flight, or the outcome is unknown: never send twice.
+          event.preventDefault();
           return;
         }
         if (!window.fetch || !form.action) return; // let the browser post normally
@@ -145,6 +189,11 @@
 
         var button = form.querySelector('button[type="submit"]');
         var originalLabel = button ? button.textContent : '';
+
+        // Mark the attempt pending BEFORE the request leaves the browser.
+        pending = true;
+        if (strict) writeGuard(form, 'pending');
+
         if (button) {
           button.disabled = true;
           button.textContent = 'Sending…';
@@ -172,8 +221,8 @@
           .then(
             function (response) {
               return response.text().then(
-                function (text) { return { ok: response.ok, text: text }; },
-                function () { return { ok: response.ok, text: null }; }
+                function (text) { return { ok: response.ok, status: response.status, text: text }; },
+                function () { return { ok: response.ok, status: response.status, text: null }; }
               );
             },
             function () { return null; } // request never completed: outcome unknown
@@ -183,10 +232,17 @@
             if (raw && typeof raw.text === 'string') {
               try { parsed = JSON.parse(raw.text); } catch (e) { parsed = null; }
             }
-            if (parsed && parsed.ok === true) return 'success';
+            // Confirmed only when the transport succeeded AND the body says ok.
+            if (raw && raw.ok && parsed && parsed.ok === true) return 'success';
             if (strict) {
-              // A readable refusal is a definite failure; anything else is uncertain.
-              if (parsed && parsed.ok === false) return 'error';
+              // A readable refusal of the input itself (bad email, honeypot) is a
+              // definite failure: nothing was delivered, so correcting and sending
+              // again is safe.
+              if (raw && parsed && parsed.ok === false && raw.status >= 400 && raw.status < 500) {
+                return 'error';
+              }
+              // A 503, any other server status, a network failure or a body we
+              // cannot read all leave delivery unknown. Stay locked, offer no retry.
               return 'uncertain';
             }
             if (!parsed && raw && raw.ok) return 'success';
@@ -194,6 +250,9 @@
           })
           .then(function (state) {
             if (state === 'success') {
+              // The only outcome that releases the guard and clears the answers.
+              pending = false;
+              clearGuard(form);
               form.reset();
               var newPage = form.querySelector('input[name="_page"]');
               if (newPage) newPage.value = window.location.href;
@@ -204,15 +263,15 @@
                 'Dr. Geri will get back to you shortly. For anything urgent, call or text (818) 324-1539.'
               );
             } else if (state === 'uncertain') {
-              // Keep every answer in the form and block another send attempt.
-              form.setAttribute('data-locked', 'true');
-              showStatus(
-                form,
-                'error',
-                'We could not confirm your message was sent.',
-                'Please don’t send it again — call or text Dr. Geri at (818) 324-1539 to check. Your details are still here on this page.'
-              );
+              // Keep every answer in the form and block another send attempt, here
+              // and after a reload. No retry is offered for an unknown outcome.
+              if (strict) writeGuard(form, 'uncertain');
+              lockForm(form, button);
+              showStatus(form, 'error', UNCERTAIN_TITLE, UNCERTAIN_NOTE);
             } else {
+              // Definite refusal: nothing was delivered, so resending is safe.
+              pending = false;
+              clearGuard(form);
               showStatus(
                 form,
                 'error',
@@ -221,14 +280,9 @@
               );
             }
 
-            if (button) {
-              if (form.getAttribute('data-locked') === 'true') {
-                button.disabled = true;
-                button.textContent = 'Status unknown — please call';
-              } else {
-                button.disabled = false;
-                button.textContent = originalLabel;
-              }
+            if (button && form.getAttribute('data-locked') !== 'true') {
+              button.disabled = false;
+              button.textContent = originalLabel;
             }
           });
       });
@@ -241,7 +295,8 @@
     if (params.get('submitted') !== '1') return;
 
     var form = document.querySelector('form[data-leadr]');
-    if (form) {
+    // Never overwrite an unknown outcome with a confirmation.
+    if (form && form.getAttribute('data-locked') !== 'true') {
       showStatus(
         form,
         'success',
