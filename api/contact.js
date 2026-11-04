@@ -1,4 +1,6 @@
-const { parse, deliver } = require('../lib/contact');
+// Server-only helper. Kept under api/_lib so Vercel never serves it as a
+// static asset and never turns it into its own route.
+const { parse, deliver } = require('./_lib/contact');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
